@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title >Fotag!</title>
+
+    <!--
+    All of your CSS must go in css/fotag.css. Do not add styles to individual elements.
+    All of your CSS must be your own -- you may not use third-party CSS, like Bootstrap.
+    -->
+    <link rel="stylesheet" href="css/fotag.css"/>
+    <style>
+        .marking-button {
+            float:right;
+        }
+        .marking-div-clear {
+            clear:both;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header">Fotag
+<div id="theLine"></div>
+<div id="header-text">The Simplistic Photo Rating App</div>
+</div>
+
+<div id="toolbar">
+    <div id="bigTool">
+        <img src="file-text.png" id="toolList" class="viewSelector">
+        <img src="table2.png" id="toolGrid" class="viewSelector viewSelectorInactive"> 
+        <div id="filter">
+            <span id="filterTag">Refine<span>
+            <img src="star-empty.png" id="filterStar1" class="filterStar">
+            <img src="star-empty.png" id="filterStar2" class="filterStar">
+            <img src="star-empty.png" id="filterStar3" class="filterStar">
+            <img src="star-empty.png" id="filterStar4" class="filterStar">
+            <img src="star-empty.png" id="filterStar5" class="filterStar">
+        </div>
+    </div>
+    <div id="smallTool" class="">
+    
+        <div class="menuSelector">
+            <img src="menu.png" id="menuBar">
+        </div>
+        <nav id="nav">
+        <ul >
+            <li id="menuList" class="current-menu-item"><a href="#">List View</a></li>
+            <li id="menuGrid"><a href="#">Grid View</a></li>
+            <li><a href="#">Filter</a></il>
+            <ul>
+                <li class="current-menu-item" id="menuStar0"><a href="#">
+            <img src="star-empty.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar"></a></il>
+                <li id="menuStar1"><a href="#">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar"></a></il>
+                <li id="menuStar2"><a href="#">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar"></a></il>
+                <li id="menuStar3"><a href="#">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar"></a></il>
+                <li id="menuStar4"><a href="#">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-empty.png" class="smallStar"></a></il>
+                <li id="menuStar5"><a href="#">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-full.png" class="smallStar">
+            <img src="star-full.png" class="smallStar"></a></il>
+            </ul>
+        <ul>
+        </nav>
+    </div>
+    
+</div>
+
+<div id="app-container">
+    <!--
+         An attachment point to place all of your dynamically created content. Do not remove or
+         rename this div.
+    -->
+    <div class="imageDiv">
+        <img src="images/GOPR0044-small.jpg" class="image">
+        <div id="stars">
+            <img src="star-empty.png" class="ratingStars">
+            <img src="star-empty.png" class="ratingStars">
+            <img src="star-empty.png" class="ratingStars">
+            <img src="star-empty.png" class="ratingStars">
+            <img src="star-empty.png" class="ratingStars">
+        </div>
+        <span>Date here</span>
+    </div>
+    
+</div>
+
+<!-- A template for a file chooser, to select multiple files. See FileChooser in view.js. -->
+<template id="file-chooser">
+    <input type="file" class="files-input" name="file_results[]" multiple />
+    <output id="list"></output>
+</template>
+
+
+<!-- Keep this here so TAs can run your unit tests -->
+<footer>
+<div id="unit-tests">
+
+    <!-- This button is for marking purposes to test your architecture. Do not remove it-->
+    <button class="marking-button">Mark Me!</button>
+    <div class="marking-div-clear"></div>
+    <a href="unit_tests.html">Run Unit Tests</a>
+</div>
+</footer>
+
+<script src="js/ext/underscore.js"></script>
+<script src="js/model.js"></script>
+<script src="js/view.js"></script>
+<script src="js/fotag.js"></script>
+<script src="js/markers_code.js"></script>
+</body>
+</html>

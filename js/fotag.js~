@@ -1,0 +1,252 @@
+'use strict';
+
+// This should be your main point of entry for your app
+var modelModule;
+var viewModule;
+var appContainer;
+var imageRendererFactory;
+var imageCollectionView;
+ var storedImageCollection;
+window.addEventListener('load', function() {
+    modelModule = createModelModule();
+    viewModule = createViewModule();
+    
+        imageRendererFactory = new viewModule.ImageRendererFactory();
+        imageCollectionView = new viewModule.ImageCollectionView();
+    
+    appContainer = document.getElementById('app-container');
+    
+    // Attach the file chooser to the page. You can choose to put this elsewhere, and style as desired
+    var fileChooser = new viewModule.FileChooser();
+    appContainer.appendChild(fileChooser.getElement());
+
+    // Demo that we can choose files and save to local storage. This can be replaced, later
+    fileChooser.addListener(function(fileChooser, files, eventDate) {
+        console.log("choosing files");
+        if(storedImageCollection!=null) {
+            console.log("its not null");
+            imageCollectionView.getElement.innerHTML="";
+            storedImageCollection=null;
+        }
+        var imageCollectionModel = new modelModule.ImageCollectionModel();
+        _.each(
+            files,
+            function(file) {
+                var newDiv = document.createElement('div');
+                var fileInfo = "File name: " + file.name + ", last modified: " + file.lastModifiedDate;
+                newDiv.innerText = fileInfo;
+                appContainer.appendChild(newDiv);
+                imageCollectionModel.addImageModel(
+                    new modelModule.ImageModel(
+                        '/images/' + file.name,
+                        file.lastModifiedDate,
+                        '',
+                        0
+                    ));
+            }
+        );
+        modelModule.storeImageCollectionModel(imageCollectionModel);
+    imageCollectionView.setImageCollectionModel(imageCollectionModel);
+    imageCollectionView.setImageRendererFactory(imageRendererFactory);
+        imageCollectionView.setToView(imageCollectionView.getCurrentView());
+    });
+    
+    
+    // Demo retrieval
+    storedImageCollection = modelModule.loadImageCollectionModel();
+    
+    //custom
+    imageCollectionView.setImageCollectionModel(storedImageCollection);
+    imageCollectionView.setImageRendererFactory(imageRendererFactory);
+    imageCollectionView.setToView("LIST_VIEW");
+    
+    viewModuleHelper(viewModule);
+    //====
+    
+    /*var storedImageDiv = document.createElement('div');
+    _.each(
+        storedImageCollection.getImageModels(),
+        function(imageModel) {
+            var imageModelDiv = document.createElement('div');
+            imageModelDiv.innerText = "ImageModel from storage: " + JSON.stringify(imageModel);
+            storedImageDiv.appendChild(imageModelDiv);
+        }
+    );
+    appContainer.appendChild(storedImageDiv);*/
+});
+
+window.addEventListener("beforeunload", function() {
+    if(storedImageCollection!=null) {
+        modelModule.storeImageCollectionModel(storedImageCollection);
+    } else {
+        //console.log("null");
+    }
+    return 0;
+});
+
+
+//used for initializing a lot of the necessary view components and listeners
+function viewModuleHelper(givModule) {
+        //var imageRenderer = new givModule.ImageRenderer();
+        var toolbar = new givModule.Toolbar();
+        toolbar.setToolSize();
+        toolbar.setToView(givModule.LIST_VIEW);
+        toolbar.setRatingFilter(0);
+        var star1 = document.getElementById("filterStar1");
+        var star2 = document.getElementById("filterStar2");
+        var star3 = document.getElementById("filterStar3");
+        var star4 = document.getElementById("filterStar4");
+        var star5 = document.getElementById("filterStar5");
+        star1.addEventListener("mouseover", function () {
+            toolbar.ratingStarShade(1);
+        });
+        star2.addEventListener("mouseover", function () {
+            toolbar.ratingStarShade(2);
+        });
+        star3.addEventListener("mouseover", function () {
+            toolbar.ratingStarShade(3);
+        });
+        star4.addEventListener("mouseover", function () {
+            toolbar.ratingStarShade(4);
+        });
+        star5.addEventListener("mouseover", function () {
+            toolbar.ratingStarShade(5);
+        });
+        star1.addEventListener("mouseout", function () {
+            toolbar.ratingStarShade(-1);
+        });
+        star2.addEventListener("mouseout", function () {
+            toolbar.ratingStarShade(-1);
+        });
+        star3.addEventListener("mouseout", function () {
+            toolbar.ratingStarShade(-1);
+        });
+        star4.addEventListener("mouseout", function () {
+            toolbar.ratingStarShade(-1);
+        });
+        star5.addEventListener("mouseout", function () {
+            toolbar.ratingStarShade(-1);
+        });
+        star1.addEventListener("click", function () {
+            if(toolbar.getCurrentRatingFilter() == 1) {
+                toolbar.ratingStarShade(0);
+                toolbar.setRatingFilter(0);
+            } else {
+                toolbar.ratingStarShade(1);
+                toolbar.setRatingFilter(1);
+            }
+        });
+        star2.addEventListener("click", function () {
+            if(toolbar.getCurrentRatingFilter() == 2) {
+                toolbar.ratingStarShade(0);
+                toolbar.setRatingFilter(0);
+            } else {
+            toolbar.ratingStarShade(2);
+            toolbar.setRatingFilter(2);
+            }
+        });
+        star3.addEventListener("click", function () {
+            if(toolbar.getCurrentRatingFilter() == 3) {
+                toolbar.ratingStarShade(0);
+                toolbar.setRatingFilter(0);
+            } else {
+            toolbar.ratingStarShade(3);
+            toolbar.setRatingFilter(3);
+            }
+        });
+        star4.addEventListener("click", function () {
+            if(toolbar.getCurrentRatingFilter() == 4) {
+                toolbar.ratingStarShade(0);
+                toolbar.setRatingFilter(0);
+            } else {
+            toolbar.ratingStarShade(4);
+            toolbar.setRatingFilter(4);
+            }
+        });
+        star5.addEventListener("click", function () {
+            if(toolbar.getCurrentRatingFilter() == 5) {
+                toolbar.ratingStarShade(0);
+                toolbar.setRatingFilter(0);
+            } else {
+            toolbar.ratingStarShade(5);
+            toolbar.setRatingFilter(5);
+            }
+        });
+        toolbar.largeButtonHover();
+        var toolList = document.getElementById("toolList");
+        var toolGrid = document.getElementById("toolGrid");
+        toolList.addEventListener('click', function() {
+            toolbar.setToView(givModule.LIST_VIEW);
+            menuList.className="current-menu-item";
+            menuGrid.className="";
+            imageCollectionView.setToView(givModule.LIST_VIEW);
+            toolList.className="viewSelector";
+            toolGrid.className="viewSelector viewSelectorInactive";
+        });
+        toolGrid.addEventListener('click', function() {
+            toolbar.setToView(givModule.GRID_VIEW);
+            menuGrid.className="current-menu-item";
+            menuList.className="";
+            imageCollectionView.setToView(givModule.GRID_VIEW);
+            toolGrid.className="viewSelector";
+            toolList.className="viewSelector viewSelectorInactive";
+        });
+        var toolMenu = document.getElementById("menuBar");
+        toolMenu.addEventListener('click', function() {
+            toolbar.showSmallMenu();
+        });
+        var menuList = document.getElementById("menuList");
+        menuList.addEventListener('click', function() {
+            toolbar.setToView(givModule.LIST_VIEW);
+            menuList.className="current-menu-item";
+            menuGrid.className="";
+            toolbar.showSmallMenu();
+            imageCollectionView.setToView(givModule.LIST_VIEW);
+        });
+        var menuGrid = document.getElementById("menuGrid");
+        menuGrid.addEventListener('click', function() {
+            toolbar.setToView(givModule.GRID_VIEW);
+            menuGrid.className="current-menu-item";
+            menuList.className="";
+            toolbar.showSmallMenu();
+            imageCollectionView.setToView(givModule.GRID_VIEW);
+        });
+        
+        var menuStar0 = document.getElementById("menuStar0");
+        var menuStar1 = document.getElementById("menuStar1");
+        var menuStar2 = document.getElementById("menuStar2");
+        var menuStar3 = document.getElementById("menuStar3");
+        var menuStar4 = document.getElementById("menuStar4");
+        var menuStar5 = document.getElementById("menuStar5");
+        menuStar0.addEventListener('click', function() {
+            toolbar.setRatingFilter(0);
+            toolbar.ratingStarShade(0);
+            toolbar.showSmallMenu();
+        });
+        menuStar1.addEventListener('click', function() {
+            toolbar.setRatingFilter(1);
+            toolbar.ratingStarShade(1);
+            toolbar.showSmallMenu();
+        });
+        menuStar2.addEventListener('click', function() {
+            toolbar.setRatingFilter(2);
+            toolbar.ratingStarShade(2);
+            toolbar.showSmallMenu();
+        });
+        menuStar3.addEventListener('click', function() {
+            toolbar.setRatingFilter(3);
+            toolbar.ratingStarShade(3);
+            toolbar.showSmallMenu();
+        });
+        menuStar4.addEventListener('click', function() {
+            toolbar.setRatingFilter(4);
+            toolbar.ratingStarShade(4);
+            toolbar.showSmallMenu();
+        });
+        menuStar5.addEventListener('click', function() {
+            toolbar.setRatingFilter(5);
+            toolbar.ratingStarShade(5);
+            toolbar.showSmallMenu();
+        });
+}
+
